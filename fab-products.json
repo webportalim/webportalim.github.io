@@ -1,0 +1,31 @@
+{
+  "seller": "Serqan",
+  "seller_url": "https://www.fab.com/sellers/Serqan",
+  "updated_at": "2026-10-06T20:53:55.706Z",
+  "products": [
+    {
+      "title": "MotionSmith AI Animation Studio Plugin",
+      "url": "https://www.fab.com/listings/21c531e5-02b0-4d4a-960d-8cceab5dba34",
+      "image": "header.png",
+      "kind": "Tools & Plugins / Animation",
+      "description": "AI-assisted 3D character animation authoring for Unreal Engine.",
+      "badge": "Fab"
+    },
+    {
+      "title": "Dystopian Post-Apocalyptic Kids — 8 MetaHuman Character Pack",
+      "url": "https://www.fab.com/listings/9eced0c6-7a61-4613-a55c-7445efca14f4",
+      "image": "https://media.fab.com/image_previews/gallery_images/dc2f7593-ab55-4093-9e14-8b268591911e/96b23577-dd9e-47c2-a89a-bc442360770c.jpg",
+      "kind": "3D / MetaHuman Characters",
+      "description": "Eight distinct child MetaHuman characters for dystopian and post-apocalyptic scenes.",
+      "badge": "Fab"
+    },
+    {
+      "title": "Sci-Fi Plasma Weapon Pack01 - 7 Weapons",
+      "url": "https://www.fab.com/listings/559fde78-9b44-4e0f-8914-82b821a56fc2",
+      "image": "https://media.fab.com/image_previews/listing_thumbnails/d9067cc3-8aa9-4d1e-bc6f-eee367dcbebe/9be7a6d3-bb4f-45f8-a81d-93c1184eee83.png",
+      "kind": "3D / Weapons & Combat",
+      "description": "Seven game-ready sci-fi plasma weapons with optimized meshes and 4K PBR textures.",
+      "badge": "Fab"
+    }
+  ]
+}
