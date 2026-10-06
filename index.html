@@ -12,7 +12,8 @@
   <meta property="og:title" content="Webportalim | CGI Director &amp; Unreal Engine Developer">
   <meta property="og:description" content="Cinematic worlds, animation tools and real-time workflows by a CGI director, 3D environment artist and Unreal Engine developer.">
   <meta property="og:url" content="https://webportalim.github.io/">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://webportalim.github.io/header.png">
+  <meta name="twitter:card" content="summary_large_image">
   <title>Webportalim | CGI Director &amp; Unreal Engine Developer</title>
   <script type="application/ld+json">
     {
@@ -120,13 +121,49 @@
     .nav-links a:hover { color: #fff; }
 
     .hero {
+      position: relative;
       min-height: calc(100vh - 72px);
       display: grid;
       align-items: center;
       padding: 90px 0 70px;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .hero-art {
+      position: absolute;
+      top: 22px;
+      left: 50%;
+      width: min(1180px, calc(100% - 40px));
+      height: clamp(210px, 31vh, 340px);
+      transform: translateX(-50%);
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .8;
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 68%, transparent 100%);
+      mask-image: linear-gradient(to bottom, #000 0%, #000 68%, transparent 100%);
+    }
+
+    .hero-art::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(7,9,18,.22), transparent 34%, transparent 66%, rgba(7,9,18,.18));
+    }
+
+    .hero-art img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+      filter: saturate(.92) contrast(1.04);
     }
 
     .hero-grid {
+      position: relative;
+      z-index: 1;
       display: grid;
       grid-template-columns: 1.35fr .65fr;
       gap: 56px;
@@ -348,7 +385,8 @@
 
     @media (max-width: 900px) {
       .hero-grid, .about-grid, .contact-box { grid-template-columns: 1fr; }
-      .hero { padding-top: 64px; }
+      .hero { padding-top: 265px; }
+      .hero-art { top: 18px; height: 220px; }
       .hero-card { min-height: auto; }
       .project.big, .project.small, .project.wide { grid-column: span 12; }
       .section-head { align-items: start; flex-direction: column; }
@@ -359,6 +397,8 @@
       .wrap { width: min(100% - 26px, 1180px); }
       .nav-links { display: none; }
       h1 { font-size: clamp(50px, 17vw, 78px); }
+      .hero { padding-top: 210px; }
+      .hero-art { width: calc(100% - 26px); height: 170px; top: 14px; opacity: .72; }
       section { padding: 44px 0; }
       .skills { grid-template-columns: 1fr; }
       .project { min-height: 300px; }
@@ -388,6 +428,9 @@
 
   <main id="top">
     <header class="hero">
+      <div class="hero-art" aria-hidden="true">
+        <img src="header.png" alt="" loading="eager" decoding="async">
+      </div>
       <div class="wrap hero-grid">
         <div>
           <div class="eyebrow">CGI · REALTIME · AI</div>
