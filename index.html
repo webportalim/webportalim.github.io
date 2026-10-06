@@ -498,6 +498,132 @@
       html { scroll-behavior: auto; }
       * { transition: none !important; }
     }
+        .frames {
+      padding-top: 10px;
+    }
+
+    .frames-head {
+      margin-bottom: 18px;
+    }
+
+    .frames-strip {
+      display: grid;
+      grid-template-columns: 1.15fr .95fr .95fr .95fr 1.15fr;
+      gap: 14px;
+    }
+
+    .frame-card {
+      position: relative;
+      min-height: 230px;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+      isolation: isolate;
+    }
+
+    .frame-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(to top, rgba(7,9,18,.92) 0%, rgba(7,9,18,.48) 34%, rgba(7,9,18,.06) 68%, rgba(7,9,18,0) 100%);
+    }
+
+    .frame-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(120deg, rgba(57,231,255,.10), transparent 36%, transparent 64%, rgba(152,107,255,.10));
+      opacity: .85;
+      transition: opacity .35s ease;
+    }
+
+    .frame-card img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transform: scale(1.02) translate3d(0,0,0);
+      transition: transform .55s ease, filter .55s ease;
+      filter: saturate(.95) brightness(.82);
+    }
+
+    .frame-card:hover img {
+      transform: scale(1.08) translate3d(0,-5px,0);
+      filter: saturate(1.04) brightness(.98);
+    }
+
+    .frame-card:hover::after {
+      opacity: 1;
+    }
+
+    .frame-meta {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 14px;
+      z-index: 2;
+      transition: transform .35s ease;
+    }
+
+    .frame-card:hover .frame-meta {
+      transform: translateY(-4px);
+    }
+
+    .frame-kicker {
+      display: inline-block;
+      margin-bottom: 8px;
+      color: #c7d2e7;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .frame-title {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.05;
+      letter-spacing: -.03em;
+      color: #fff;
+    }
+
+    .frame-card:nth-child(1) img { object-position: 8% 50%; }
+    .frame-card:nth-child(2) img { object-position: 28% 45%; }
+    .frame-card:nth-child(3) img { object-position: 50% 50%; }
+    .frame-card:nth-child(4) img { object-position: 72% 45%; }
+    .frame-card:nth-child(5) img { object-position: 92% 50%; }
+
+    @media (max-width: 1100px) {
+      .frames-strip {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .frames-strip {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .frame-card {
+        min-height: 210px;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .frames-strip {
+        grid-template-columns: 1fr;
+      }
+      .frame-card {
+        min-height: 190px;
+      }
+      .frame-title {
+        font-size: 18px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -568,7 +694,59 @@
         </div>
       </div>
     </header>
+    <section class="frames" id="frames" aria-labelledby="frames-title">
+      <div class="wrap">
+        <div class="section-head frames-head">
+          <div>
+            <div class="section-kicker">Selected frames</div>
+            <h2 class="section-title" id="frames-title">Cinematic slices from the world.</h2>
+          </div>
+          <p class="section-copy">A visual strip that hints at the tone: large-scale worlds, atmospheric frames and production-focused motion.</p>
+        </div>
 
+        <div class="frames-strip">
+          <a class="frame-card" href="#work">
+            <img src="header.png" alt="Futuristic skyline frame" loading="lazy" decoding="async">
+            <div class="frame-meta">
+              <span class="frame-kicker">Solora</span>
+              <h3 class="frame-title">Orbital skyline</h3>
+            </div>
+          </a>
+
+          <a class="frame-card" href="#work">
+            <img src="header.png" alt="Sci-fi structures frame" loading="lazy" decoding="async">
+            <div class="frame-meta">
+              <span class="frame-kicker">Worldbuilding</span>
+              <h3 class="frame-title">Megastructure mood</h3>
+            </div>
+          </a>
+
+          <a class="frame-card" href="#work">
+            <img src="header.png" alt="Data and motion frame" loading="lazy" decoding="async">
+            <div class="frame-meta">
+              <span class="frame-kicker">Motion</span>
+              <h3 class="frame-title">Flow systems</h3>
+            </div>
+          </a>
+
+          <a class="frame-card" href="#work">
+            <img src="header.png" alt="Interface inspired frame" loading="lazy" decoding="async">
+            <div class="frame-meta">
+              <span class="frame-kicker">Tools</span>
+              <h3 class="frame-title">Realtime control</h3>
+            </div>
+          </a>
+
+          <a class="frame-card" href="#work">
+            <img src="header.png" alt="Atmospheric sci-fi frame" loading="lazy" decoding="async">
+            <div class="frame-meta">
+              <span class="frame-kicker">Atmosphere</span>
+              <h3 class="frame-title">Neon horizon</h3>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
     <section id="work">
       <div class="wrap">
         <div class="section-head">
