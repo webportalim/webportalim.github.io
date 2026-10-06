@@ -1,0 +1,31 @@
+name: Update Fab products
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 4 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Refresh Fab product metadata
+        run: python3 scripts/update_fab_products.py
+
+      - name: Commit changes
+        run: |
+          if git diff --quiet -- fab-products.json; then
+            echo "No Fab changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add fab-products.json
+          git commit -m "Refresh Fab products"
+          git push
