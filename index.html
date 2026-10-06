@@ -122,10 +122,9 @@
 
     .hero {
       position: relative;
-      min-height: calc(100vh - 72px);
-      display: grid;
-      align-items: center;
-      padding: 90px 0 70px;
+      min-height: auto;
+      display: block;
+      padding: clamp(285px, 24vw, 355px) 0 48px;
       overflow: hidden;
       isolation: isolate;
     }
@@ -166,7 +165,8 @@
       z-index: 1;
       display: grid;
       grid-template-columns: 1.35fr .65fr;
-      gap: 56px;
+      column-gap: 56px;
+      row-gap: 32px;
       align-items: center;
     }
 
@@ -272,6 +272,90 @@
       font-size: 14px;
     }
     .stack-item span:last-child { color: var(--muted); font-size: 12px; }
+
+    .hero-status {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1.2fr repeat(3, 1fr);
+      gap: 10px;
+      padding-top: 6px;
+    }
+
+    .status-intro,
+    .status-card {
+      min-height: 92px;
+      border: 1px solid rgba(255,255,255,.075);
+      border-radius: 18px;
+      background: linear-gradient(145deg, rgba(255,255,255,.05), rgba(255,255,255,.025));
+    }
+
+    .status-intro {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px;
+    }
+
+    .status-pulse {
+      width: 10px;
+      height: 10px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 6px rgba(103,255,178,.08), 0 0 22px rgba(103,255,178,.6);
+    }
+
+    .status-intro small,
+    .status-card small {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.45;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .status-intro b { display: block; margin-top: 5px; font-size: 14px; letter-spacing: -.01em; }
+
+    .status-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      overflow: hidden;
+      transition: transform .2s ease, border-color .2s ease;
+    }
+
+    .status-card::after {
+      content: "";
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      right: -65px;
+      bottom: -75px;
+      border-radius: 50%;
+      background: var(--accent, var(--cyan));
+      opacity: .12;
+      filter: blur(30px);
+    }
+
+    a.status-card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,.2); }
+    .status-index { color: #657189; font-size: 11px; font-weight: 800; }
+    .status-card b { display: block; margin-bottom: 4px; font-size: 14px; }
+    .status-state {
+      position: relative;
+      z-index: 1;
+      padding: 5px 7px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 999px;
+      color: #cbd6e8;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      white-space: nowrap;
+    }
 
     section { padding: 56px 0; }
     .section-head { display: flex; align-items: end; justify-content: space-between; gap: 28px; margin-bottom: 34px; }
@@ -383,6 +467,10 @@
     footer { padding: 28px 0 44px; color: #768196; font-size: 13px; }
     .footer-row { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
 
+    @media (max-width: 1000px) {
+      .hero-status { grid-template-columns: repeat(2, 1fr); }
+    }
+
     @media (max-width: 900px) {
       .hero-grid, .about-grid, .contact-box { grid-template-columns: 1fr; }
       .hero { padding-top: 265px; }
@@ -399,6 +487,7 @@
       h1 { font-size: clamp(50px, 17vw, 78px); }
       .hero { padding-top: 210px; }
       .hero-art { width: calc(100% - 26px); height: 170px; top: 14px; opacity: .72; }
+      .hero-status { grid-template-columns: 1fr; }
       section { padding: 44px 0; }
       .skills { grid-template-columns: 1fr; }
       .project { min-height: 300px; }
@@ -452,6 +541,31 @@
             <div class="stack-item"><span>ComfyUI</span><span>AI workflow</span></div>
           </div>
         </aside>
+
+        <div class="hero-status">
+          <div class="status-intro">
+            <span class="status-pulse" aria-hidden="true"></span>
+            <div><small>Now building</small><b>One-person studio / live pipeline</b></div>
+          </div>
+
+          <a class="status-card" style="--accent:#39e7ff" href="https://motionsmithai.blogspot.com" target="_blank" rel="noreferrer">
+            <span class="status-index">01</span>
+            <div><b>MotionSmith V2</b><small>UE 5.8 animation tooling</small></div>
+            <span class="status-state">LIVE</span>
+          </a>
+
+          <div class="status-card" style="--accent:#986bff">
+            <span class="status-index">02</span>
+            <div><b>The Platform</b><small>Solo CGI film</small></div>
+            <span class="status-state">IN PRODUCTION</span>
+          </div>
+
+          <div class="status-card" style="--accent:#67ffb2">
+            <span class="status-index">03</span>
+            <div><b>AI Concert</b><small>Virtual production experiment</small></div>
+            <span class="status-state">EXPERIMENT</span>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -550,7 +664,7 @@
           <div>
             <div class="section-kicker">04 / Links</div>
             <h2 id="links-title">Let's connect elsewhere.</h2>
-            <p>Work, videos and notes.</p>
+            <p>Work and videos.</p>
           </div>
           <div class="contact-links">
             <a href="https://www.youtube.com/@motionsmithai" target="_blank" rel="noopener noreferrer">MotionSmith AI <span aria-hidden="true">↗</span></a>
