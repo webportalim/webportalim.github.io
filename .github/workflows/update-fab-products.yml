@@ -15,8 +15,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Refresh Fab product metadata
-        run: python3 scripts/update_fab_products.py
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Discover and refresh Fab products
+        run: node scripts/update_fab_products.mjs
 
       - name: Commit changes
         run: |
