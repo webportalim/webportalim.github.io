@@ -28,20 +28,44 @@ for (let i = 0; i < 20 && stablePasses < 3; i++) {
   await page.waitForTimeout(900);
 }
 
-const urls = await page.locator('a[href*="/listings/"]').evaluateAll(nodes =>
-  [...new Set(nodes.map(a => new URL(a.href, location.href).href.split("?")[0]))]
-);
+const sellerCards = await page.locator('a[href*="/listings/"]').evaluateAll(nodes => {
+  const out = new Map();
 
-for (const url of urls) {
+  for (const a of nodes) {
+    const url = new URL(a.href, location.href).href.split("?")[0];
+    let image = "";
+
+    const direct = a.querySelector("img");
+    if (direct) image = direct.currentSrc || direct.src || "";
+
+    if (!image) {
+      let p = a.parentElement;
+      for (let i = 0; p && i < 6 && !image; i++, p = p.parentElement) {
+        const img = p.querySelector("img");
+        if (img) image = img.currentSrc || img.src || "";
+      }
+    }
+
+    const previous = out.get(url);
+    if (!previous || (!previous.image && image)) out.set(url, { url, image });
+  }
+
+  return [...out.values()];
+});
+
+for (const card of sellerCards) {
+  const url = card.url;
   if (!byUrl.has(url)) {
     byUrl.set(url, {
       title: "Fab listing",
       url,
-      image: "header.png",
+      image: card.image || "header.png",
       kind: "Fab listing",
       description: "Published product on Fab.",
       badge: "Fab"
     });
+  } else if (card.image) {
+    byUrl.get(url).image = card.image;
   }
 }
 
@@ -59,7 +83,7 @@ for (const [url, product] of byUrl) {
     const ogDescription = await meta('meta[property="og:description"]');
 
     if (ogTitle) product.title = ogTitle.replace(/\s*\|\s*Fab\s*$/i, "").trim();
-    if (ogImage) product.image = ogImage;
+    if (ogImage && (!product.image || product.image === "header.png")) product.image = ogImage;
     if (ogDescription && (!product.description || product.description === "Published product on Fab.")) {
       product.description = ogDescription.slice(0, 220);
     }
