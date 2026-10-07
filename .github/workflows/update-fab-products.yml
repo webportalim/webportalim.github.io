@@ -2,6 +2,12 @@ name: Update Fab products
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/update_fab_products.mjs"
+      - ".github/workflows/update-fab-products.yml"
   schedule:
     - cron: "17 4 * * *"
 
