@@ -4,6 +4,14 @@
   "updated_at": "2026-10-28T10:33:19.506Z",
   "products": [
     {
+      "title": "MotionSmith Pro V2",
+      "url": "https://www.fab.com/listings/3d83439b-d1b1-4345-865e-08ed69b995b2",
+      "image": "https://raw.githubusercontent.com/webportalim/MotionSmith-AI-Pro-Text-to-Motion-for-Sequencer/main/assets/motionsmith-pro-v2-cover.png",
+      "kind": "Tools & Plugins / Unreal Engine 5.8",
+      "description": "Prompt-driven character animation, route-aware Gameplay Motion, segment continuation and Control Rig refinement inside Unreal Engine Sequencer.",
+      "badge": "Fab"
+    },
+    {
       "title": "MotionSmith AI Animation Studio Plugin",
       "url": "https://www.fab.com/listings/21c531e5-02b0-4d4a-960d-8cceab5dba34",
       "image": "fab-motionsmith-cover.jpg",

@@ -14,8 +14,11 @@ const page = await browser.newPage({
 });
 
 try {
-  await page.goto(SELLER_URL, { waitUntil: "domcontentloaded", timeout: 30000 });
-  await page.waitForTimeout(2000);
+  const response = await page.goto(SELLER_URL, { waitUntil: "domcontentloaded", timeout: 30000 });
+  if (!response?.ok()) {
+    throw new Error(`Fab seller page returned HTTP ${response?.status() ?? 'unknown'}; saved products were not changed.`);
+  }
+  await page.locator('a[href*="/listings/"]').first().waitFor({ state: "attached", timeout: 15000 });
 
   let lastCount = -1;
   let stable = 0;
@@ -31,9 +34,12 @@ try {
     const out = new Map();
 
     for (const a of nodes) {
-      const url = new URL(a.href, location.href).href.split("?")[0];
+      const listing = new URL(a.href, location.href);
+      if (listing.origin !== location.origin || !/^\/listings\/[0-9a-f-]{36}$/i.test(listing.pathname)) continue;
+      const url = listing.origin + listing.pathname;
       let image = "";
-      let title = (a.innerText || "").trim().split("\n")[0] || "Fab listing";
+      let title = (a.innerText || a.getAttribute("aria-label") || a.querySelector("img")?.alt || "").trim().split("\n")[0];
+      if (!title) continue;
 
       const candidates = [a, a.parentElement, a.parentElement?.parentElement, a.parentElement?.parentElement?.parentElement];
       for (const el of candidates) {
@@ -49,6 +55,10 @@ try {
 
     return [...out.values()];
   });
+
+  if (!cards.length) {
+    throw new Error("Fab returned no valid seller listings; saved products were not changed.");
+  }
 
   for (const card of cards) {
     if (byUrl.has(card.url)) {
@@ -66,12 +76,17 @@ try {
     }
   }
 
-  data.products = [...byUrl.values()];
-  data.seller = "Serqan";
-  data.seller_url = SELLER_URL;
-  data.updated_at = new Date().toISOString();
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2) + "\n");
-  console.log(`Synced ${data.products.length} Fab products from seller cards.`);
+  const products = [...byUrl.values()];
+  if (JSON.stringify(products) === JSON.stringify(data.products)) {
+    console.log(`Checked ${cards.length} Fab listings; no product changes.`);
+  } else {
+    data.products = products;
+    data.seller = "Serqan";
+    data.seller_url = SELLER_URL;
+    data.updated_at = new Date().toISOString();
+    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2) + "\n");
+    console.log(`Synced ${data.products.length} Fab products from seller cards.`);
+  }
 } finally {
   await browser.close();
 }
