@@ -16,7 +16,9 @@ const page = await browser.newPage({
 try {
   const response = await page.goto(SELLER_URL, { waitUntil: "domcontentloaded", timeout: 30000 });
   if (!response?.ok()) {
-    throw new Error(`Fab seller page returned HTTP ${response?.status() ?? 'unknown'}; saved products were not changed.`);
+    const error = new Error(`Fab seller page returned HTTP ${response?.status() ?? 'unknown'}; saved products were not changed.`);
+    error.status = response?.status();
+    throw error;
   }
   await page.locator('a[href*="/listings/"]').first().waitFor({ state: "attached", timeout: 15000 });
 
@@ -86,6 +88,14 @@ try {
     data.updated_at = new Date().toISOString();
     fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2) + "\n");
     console.log(`Synced ${data.products.length} Fab products from seller cards.`);
+  }
+} catch (error) {
+  if (error.status !== 403) throw error;
+  console.warn("::warning::Fab refresh skipped: HTTP 403 access denied. The saved product catalog is unchanged.");
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+      "## Fab refresh skipped\n\nFab denied automated access (HTTP 403). No products were fetched or refreshed. " +
+      `The existing ${data.products.length} products and catalog timestamp were preserved.\n`);
   }
 } finally {
   await browser.close();
